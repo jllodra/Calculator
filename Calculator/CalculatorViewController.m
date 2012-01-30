@@ -17,6 +17,7 @@
 @implementation CalculatorViewController
 
 @synthesize display;
+@synthesize brainDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
 
@@ -34,9 +35,19 @@
     }
 }
 
+- (IBAction)dotPressed {
+    NSRange range = [self.display.text rangeOfString:@"."];
+    if (range.location == NSNotFound) {
+        self.display.text = [self.display.text stringByAppendingString:@"."];            
+    }
+    self.userIsInTheMiddleOfEnteringANumber = YES;
+}
+
 - (IBAction)enterPressed {
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
+    self.brainDisplay.text = [self.brainDisplay.text stringByAppendingString:self.display.text];
+    self.brainDisplay.text = [self.brainDisplay.text stringByAppendingString:@" "];
 }
 
 - (IBAction)operationPressed:(UIButton *)sender {
@@ -46,6 +57,8 @@
     NSString *operation = sender.currentTitle;
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.brainDisplay.text = [self.brainDisplay.text stringByAppendingString:operation];
+    self.brainDisplay.text = [self.brainDisplay.text stringByAppendingString:@" "];
 }
 
 
@@ -69,6 +82,7 @@
 - (void)viewDidUnload
 {
     [self setDisplay:nil];
+    [self setBrainDisplay:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

@@ -36,7 +36,7 @@
 - (double)performOperation:(NSString *)operation {
     
     double result = 0;
-
+    
     if([operation isEqualToString:@"+"]) {
         result = [self popOperand] + [self popOperand];
     } else if ([operation isEqualToString:@"*"]) {
@@ -47,9 +47,20 @@
     } else if ([operation isEqualToString:@"/"]) {
         double divisor = [self popOperand];
         if (divisor) result = [self popOperand] / divisor;
-    }
+    } else if ([operation isEqualToString:@"sin"]) {
+        result = sin([self popOperand]);
+    } else if ([operation isEqualToString:@"cos"]) {
+        result = cos([self popOperand]);
+    } else if ([operation isEqualToString:@"sqrt"]) {
+        result = sqrt([self popOperand]);
+    } 
     
-    [self pushOperand:result];
+    if ([operation isEqualToString:@"pi"]) {
+        [self pushOperand:M_PI];
+        result = M_PI;
+    } else {
+        [self pushOperand:result];
+    }
     
     return result;
 
